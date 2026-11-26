@@ -18,8 +18,22 @@ Image Upscaler is a web application that allows users to upload images, enhance 
 
 ## 📸 Screenshots
 
+Screenshot 2026-11-26 092004.png
+Add files via upload
+9 minutes ago
+Screenshot 2026-11-26 092030.png
+Add files via upload
+9 minutes ago
+Screenshot 2026-11-26 092105.png
+Add files via upload
+9 minutes ago
+Screenshot 2026-11-26 092305.png
+
+### Login Page
+![Login page](Screenshot 2026-11-26 092004.png)
+
 ### Homepage
-![Image Upscaler Homepage](screenshots/homepage.png)
+![Image Upscaler Homepage]()
 
 ### Image Upload
 ![Image Upload](screenshots/upload.png)
