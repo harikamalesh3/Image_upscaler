@@ -93,12 +93,5 @@ The main objective of this project is to develop a user-friendly image enhanceme
 - Image quality comparison.
 - Improved processing speed.
 
-## 👨‍💻 Developer
-
-**Hari Kamalesh**
-
 GitHub: [@harikamalesh3](https://github.com/harikamalesh3)
 
-## 📜 License
-
-This project is available for educational and personal development purposes.
