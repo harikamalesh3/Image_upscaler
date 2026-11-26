@@ -1,76 +1,101 @@
-# PixelForge AI
+# 🖼️ Image Upscaler
 
-> **Upscale your images. Recover the details. Keep them natural.**
+A modern web-based Image Upscaler application designed to enhance image quality and provide an easy-to-use image processing experience.
 
-A fully client-side image upscaler. Bigger, sharper and better — without the
-plastic, painted look. No account, no uploads, no server: your images never
-leave your device.
+## 🚀 Overview
 
-## ✨ Core features
+Image Upscaler is a web application that allows users to upload images, enhance their resolution, and download the processed results. It provides a simple and user-friendly interface for improving image quality.
 
-- **Batch upscaling** — drag & drop or select multiple images, see a thumbnail
-  for each, process them individually with live progress, and download a single
-  result or everything at once. Failed images are shown separately with a
-  **Retry** option.
-- **Natural detail enhancement** — a restrained detail-recovery pass that
-  sharpens textures and fine detail without over-sharpening, fake texture,
-  plastic faces, or oversaturated colour.
-- **✨ Smart Mode** — one click. PixelForge analyses each image (resolution,
-  sharpness, noise, detail, face hint) and picks the recommended level, then
-  **Enhance Automatically**.
-- **2× · 4× · 8× levels** — with live previews of the expected output
-  resolution. We never claim quality the engine can't actually produce.
-- **🔍 Pixel Microscope** — zoom deep into any region and compare the
-  *Original ↔ Enhanced* side by side, with a **“Detail Improved”** indicator.
-- **AI Image Comparison Workspace** — a three-mode viewer (`Original | Enhanced
-  | Compare`) with **Synchronized Zoom** (zoom one pane, the other follows),
-  **Focus Comparison** buttons (Full Image, Face, Details, Texture, Background,
-  Text) that instantly jump both views to the same region, a **Zoom Controls**
-  bar (− / % / + / Fit / Reset), and **AI Improvement Indicators** showing real
-  measured metrics (Quality, Sharpness, Detail, Noise) — never fake data.
-- **My Enhancements history** — completed results saved automatically with
-  original/enhanced thumbnails, upscale level, resolutions, date and status
-  (View / Download / Delete).
+## ✨ Features
 
-## 🚀 Run it
+- 📤 Upload images easily.
+- 🖼️ Preview uploaded images.
+- 🔍 Upscale and enhance image resolution.
+- ⚡ Fast and simple processing workflow.
+- 📥 Download enhanced images.
+- 📱 Responsive and user-friendly interface.
+- 🎨 Modern user interface design.
 
-Just open `index.html` in any modern browser (Chrome, Edge, Firefox, Safari).
-No build step, no installs.
+## 📸 Screenshots
 
-For local hosting (optional) you can serve the folder, e.g.:
+### Homepage
+![Image Upscaler Homepage](screenshots/homepage.png)
+
+### Image Upload
+![Image Upload](screenshots/upload.png)
+
+### Upscaled Image Result
+![Upscaled Image Result](screenshots/result.png)
+
+## 🛠️ Technologies Used
+
+- HTML5
+- CSS3
+- JavaScript
+- [Add your actual backend or image processing technology here]
+
+## 📂 Project Structure
+
+```text
+Image_upscaler/
+│
+├── frontend/
+├── backend/
+├── screenshots/
+├── README.md
+└── .gitignore
+```
+
+*Update this structure to match your actual project folders.*
+
+## ⚙️ Installation and Setup
+
+### 1. Clone the repository
 
 ```bash
-python -m http.server 8080      # then open http://localhost:8080
+git clone https://github.com/harikamalesh3/Image_upscaler.git
 ```
 
-## 📁 Structure
+### 2. Navigate to the project folder
 
-```
-index.html         App shell (Studio, history, comparison modal, microscope)
-css/styles.css     Dark "AI" theme
-js/enhancer.js     Enhancement + analysis engine (upscale, unsharp-mask detail)
-js/history.js      localStorage-backed "My Enhancements"
-js/app.js          UI orchestration (upload, queue, compare, microscope…)
+```bash
+cd Image_upscaler
 ```
 
-## ⚙️ How the enhancement works
+### 3. Install dependencies
 
-1. **Upscale** — the image is rescaled with hardware canvas resampling
-   (`imageSmoothingQuality: 'high'`).
-2. **Detail recovery** — a blended *unsharp mask* adds back edge-local
-   micro-contrast. The amount, radius and noise-threshold are tuned
-   automatically in Smart Mode (noisy images get gentler handling; detected
-   faces stay soft), keeping results natural.
-3. **Gentle colour** — a small shadow-lift and ~6% saturation bump, no
-   garish boosts.
+```bash
+npm install
+```
 
-A future version can swap the engine for a GPU AI model (e.g. Real-ESRGAN via
-ONNX) while keeping the same UI.
+### 4. Run the application
 
-## ℹ️ Notes & limitations
+```bash
+npm run dev
+```
 
-- History is stored in `localStorage`; very large images may exceed the storage
-  quota and are kept “in-session only” with a toast notice.
-- “Face detected” is a lightweight skin-tone heuristic, not a face detector.
-- For truly lossless JPEG export you can re-run and use the PNG download.
-"# image_upscaler" 
+Open the local URL displayed in your terminal in your browser.
+
+*Note: These commands assume your project uses npm and provides a `dev` script.*
+
+## 🎯 Project Objective
+
+The main objective of this project is to develop a user-friendly image enhancement application that makes image upscaling accessible through a web interface.
+
+## 🔮 Future Improvements
+
+- Advanced AI-powered image enhancement.
+- Multiple image format support.
+- Batch image processing.
+- Image quality comparison.
+- Improved processing speed.
+
+## 👨‍💻 Developer
+
+**Hari Kamalesh**
+
+GitHub: [@harikamalesh3](https://github.com/harikamalesh3)
+
+## 📜 License
+
+This project is available for educational and personal development purposes.
