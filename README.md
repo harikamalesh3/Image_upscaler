@@ -30,16 +30,16 @@ Add files via upload
 Screenshot 2026-11-26 092305.png
 
 ### Login Page
-![Login page](Screenshot 2026-11-26 092004.png)
+![Login page](Screenshot%202026-11-26%20092004.png)
 
 ### Homepage
-![Image Upscaler Homepage]()
+![Image Upscaler Homepage](Screenshot%2026-11-26%092030.png)
 
 ### Image Upload
-![Image Upload](screenshots/upload.png)
+![Image Upload](Screenshot%2026-11-26%092105.png)
 
 ### Upscaled Image Result
-![Upscaled Image Result](screenshots/result.png)
+![Upscaled Image Result](Screenshot%2026-11-26%092305.png)
 
 ## 🛠️ Technologies Used
 
