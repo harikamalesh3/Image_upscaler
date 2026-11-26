@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PixelForge AI — Upscale your images. Recover the details.</title>
+  <meta name="description" content="PixelForge AI makes images bigger, sharper and better — without making them look artificial. Smart mode, batch upscaling, before/after comparison and a pixel microscope." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Local-device login gate. This is a convenience lock, not server-side account security. -->
+  <div class="pf-auth-overlay" id="pfAuthOverlay" role="dialog" aria-modal="true" aria-labelledby="pfAuthTitle">
+    <form class="pf-auth-card" id="pfAuthForm">
+      <div class="pf-auth-brand"><span class="pf-auth-logo">✦</span> PixelForge <em>AI</em></div>
+      <p class="pf-auth-kicker">YOUR CREATIVE WORKSPACE</p>
+      <h1 id="pfAuthTitle">Welcome back</h1>
+      <p class="pf-auth-copy" id="pfAuthCopy">Sign in to open your image enhancement studio.</p>
+      <label for="pfAuthUser">Username</label>
+      <input id="pfAuthUser" name="username" autocomplete="username" required minlength="3" maxlength="40" placeholder="Enter username" />
+      <label for="pfAuthPassword">Password</label>
+      <input id="pfAuthPassword" name="password" type="password" autocomplete="current-password" required minlength="6" placeholder="At least 6 characters" />
+      <p class="pf-auth-error" id="pfAuthError" role="alert"></p>
+      <button class="btn btn-primary pf-auth-submit" id="pfAuthSubmit" type="submit">Sign in</button>
+      <button class="pf-auth-switch" id="pfAuthSwitch" type="button">First time here? Create a local account</button>
+      <p class="pf-auth-note">Your account is stored only in this browser on this device.</p>
+    </form>
+  </div>
+  <div class="bg-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+  <svg class="svg-defs" aria-hidden="true">
+    <defs>
+      <linearGradient id="grad-brand" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#7c5cff"/>
+        <stop offset="1" stop-color="#ff3b5c"/>
+      </linearGradient>
+      <radialGradient id="grad-glow" cx="0.5" cy="0.4" r="0.75">
+        <stop offset="0" stop-color="#7c5cff" stop-opacity="0.55"/>
+        <stop offset="1" stop-color="#7c5cff" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar" id="navbar">
+    <a class="brand" href="#top" aria-label="PixelForge AI home">
+      <span class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="url(#grad-brand)" stroke-width="2" stroke-linecap="round">
+          <rect x="3" y="3" width="18" height="18" rx="3"/>
+          <circle cx="12" cy="12" r="3.2"/>
+          <path d="M12 5v2M12 17v2M5 12h2M17 12h2"/>
+        </svg>
+      </span>
+      <span class="brand-name">PixelForge <em>AI</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+            <a href="#studio">Studio</a>
+      <a href="#history">My Enhancements</a>
+      <a href="#tech-showcase">Tech</a>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow">AI image upscaler</p>
+    <h1>Upscale your images.<br/><span class="grad">Recover the details. Keep them natural.</span></h1>
+    <p class="hero-sub">Bigger, sharper and better — without the plastic, painted look. Upload → one click → a beautiful result.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#studio">Try it now</a>
+      <a class="btn btn-ghost" href="#how">How it works</a>
+    </div>
+    <div class="trust-row" aria-label="Features">
+      <span>✦ Smart Mode</span><span class="dot">•</span>
+      <span>2× · 4× · 8×</span><span class="dot">•</span>
+      <span>🔍 Pixel Microscope</span><span class="dot">•</span>
+      <span>Before / After</span>
+    </div>
+  </section>
+
+  <!-- ============ STUDIO ============ -->
+  <main id="studio" class="studio wrap">
+    <h2 class="section-title">Enhancement Studio</h2>
+    <p class="section-sub">Upload images, choose an upscale level, and let PixelForge recover the detail.</p>
+
+<!-- STEP 1: UPLOAD -->
+    <section class="card" aria-labelledby="step1">
+      <div class="step-label" id="step1"><span class="step-num">1</span> Upload your images</div>
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload images. Drop files here or press Enter to browse.">
+        <div class="dropzone-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/>
+          </svg>
+        </div>
+        <h3>Drop your images here</h3>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden />
+        <button class="btn btn-outline" id="chooseFilesBtn" type="button" hidden>Choose Images</button>
+        <p class="muted small">JPG, PNG, WebP, GIF &amp; more · multiple files supported</p>
+      </div>
+    </section>
+
+    <!-- STEP 2: ENHANCEMENT LEVEL -->
+    <section class="card" id="step2Card" aria-labelledby="step2">
+      <div class="step-head" id="step2"><span class="step-num">2</span> Choose enhancement</div>
+
+      <div class="level-grid" role="radiogroup" aria-label="Enhancement level">
+        <label class="level-card" data-level="smart">
+          <input type="radio" name="level" value="smart" checked />
+          <span class="level-emoji">✨</span>
+          <span class="level-name">Smart Mode</span>
+          <span class="level-desc">Auto analysis &amp; recommendation</span>
+        </label>
+        <label class="level-card" data-level="2">
+          <input type="radio" name="level" value="2" />
+          <span class="level-emoji">2×</span>
+          <span class="level-name">2× Upscale</span>
+          <span class="level-desc">Light quality improvement</span>
+        </label>
+        <label class="level-card" data-level="4">
+          <input type="radio" name="level" value="4" />
+          <span class="level-emoji">4×</span>
+          <span class="level-name">4× Upscale</span>
+          <span class="level-desc">Recommended for most images</span>
+        </label>
+        <label class="level-card" data-level="8">
+          <input type="radio" name="level" value="8" />
+          <span class="level-emoji">8×</span>
+          <span class="level-name">8× Upscale</span>
+          <span class="level-desc">For extremely small images</span>
+        </label>
+      </div>
+
+      <div class="engine-row">
+        <span class="muted small">Engine:</span>
+        <label class="level-card"><input type="radio" name="engine" value="ai" checked /><span class="level-name">AI (Real-ESRGAN)</span></label>
+        <label class="level-card"><input type="radio" name="engine" value="classic" /><span class="level-name">Classic (fast)</span></label>
+        <span class="muted small" id="aiStatus">AI loads on first enhance (~5MB).</span>
+      </div>
+
+      <div class="expected-out" id="expectedOut" hidden>
+        <span>Expected output resolution</span>
+        <strong id="expectedText"></strong>
+      </div>
+    </section>
+
+    <!-- STEP 3: ENHANCE -->
+    <section class="card" aria-labelledby="step3">
+      <div class="step-head" id="step3"><span class="step-num">3</span> Enhance</div>
+
+      <!-- smart analysis -->
+      <div class="smart-analysis" id="smartAnalysis" hidden>
+        <div class="smart-header">
+          <span class="level-emoji">✨</span>
+          <div class="smart-header-text">
+            <div class="smart-title">Smart Mode analysis</div>
+            <button type="button" class="btn-link" id="enhanceAutomaticallyBtn"><strong>✨ Enhance Automatically</strong></button>
+          </div>
+        </div>
+        <div class="smart-metrics" id="smartMetrics"></div>
+        <div class="smart-reco" id="smartReco"></div>
+      </div>
+
+      <div class="actions-row">
+        <button class="btn btn-primary btn-lg" id="enhanceBtn" type="button" disabled>
+          <span class="btn-spark">✦</span> Enhance Images
+        </button>
+        <button class="btn btn-ghost" id="clearBtn" type="button" hidden>Clear all</button>
+        <button class="btn btn-ghost" id="downloadAllBtn" type="button" hidden>⬇ Download All</button>
+        <span class="status-hint" id="statusHint"></span>
+      </div>
+    </section>
+
+    <!-- COMPARISON (appears here once an image is enhanced) -->
+    <section class="card compare-card" id="compareModal" aria-labelledby="compareTitle" hidden>
+      <h3 class="section-title" id="compareTitle">Your Transformation Is Ready <span class="spark">✨</span></h3>
+      <p class="section-sub">Slide, zoom and inspect your result, then download it in the format you want.</p>
+      <!-- Mode toggles -->
+      <div class="cmp-modes" role="tablist" aria-label="Comparison view mode">
+        <button type="button" class="cmp-mode" data-mode="orig" id="modeOrig">Original</button>
+        <button type="button" class="cmp-mode active" data-mode="slider" id="modeSlider">Slide Compare</button>
+        <button type="button" class="cmp-mode" data-mode="enh" id="modeEnh">Enhanced</button>
+      </div>
+
+      <!-- Images -->
+      <div class="cmp-grid" id="cmpGrid">
+        <figure class="cmp-pane pane-orig" id="paneOrig">
+          <figcaption class="cmp-cap">
+            <span class="cap-label">Original</span>
+            <span class="cap-badge" id="capOrigRes"></span>
+          </figcaption>
+          <div class="cview" id="cviewOrig">
+            <img class="cimg" id="cimgOrig" alt="Original image" draggable="false" />
+            <div class="cview-label">ORIGINAL</div>
+            <div class="cview-hud" id="hudOrig"></div>
+          </div>
+          <div class="cmp-meta" id="metaOrig"><span class="muted small">Loading…</span></div>
+        </figure>
+
+        <figure class="cmp-pane pane-enh" id="paneEnh">
+          <figcaption class="cmp-cap">
+            <span class="cap-label">Enhanced</span>
+            <span class="cap-badge" id="capEnhRes"></span>
+          </figcaption>
+          <div class="cview" id="cviewEnh">
+            <img class="cimg" id="cimgEnh" alt="Enhanced image" draggable="false" />
+            <div class="cview-label label-enh">ENHANCED</div>
+            <div class="cview-hud" id="hudEnh"></div>
+          </div>
+          <div class="cmp-meta" id="metaEnh"><span class="muted small">Loading…</span></div>
+        </figure>
+
+        <figure class="cmp-pane pane-slider" id="paneSlider" hidden>
+          <figcaption class="cmp-cap">
+            <span class="cap-label">Original ⟷ Enhanced</span>
+            <span class="cap-badge" id="capSliderRes"></span>
+          </figcaption>
+          <div class="wipe" id="wipeView">
+            <img class="wipe-img" id="wipeEnh" alt="Enhanced image" draggable="false" />
+            <img class="wipe-img wipe-top" id="wipeOrig" alt="Original image" draggable="false" />
+            <div class="wipe-line" id="wipeLine" aria-hidden="true"></div>
+            <button type="button" class="wipe-handle" id="wipeHandle" aria-label="Drag left or right to compare original and enhanced"><span>⟷</span></button>
+            <div class="cview-label">ORIGINAL</div>
+            <div class="cview-label label-enh wipe-enh-tag">ENHANCED</div>
+          </div>
+          <div class="cmp-meta"><span class="muted small">Hold the handle and slide left / right — Original on the left, Enhanced on the right.</span></div>
+        </figure>
+      </div>
+
+      <!-- Zoom controls -->
+      <div class="zoombar">
+        <button type="button" class="btn btn-sm btn-ghost" id="zoomOutBtn" title="Zoom out">−</button>
+        <button type="button" class="btn btn-sm btn-ghost zoom-label" id="zoomLabel" title="Current zoom" disabled>100%</button>
+        <button type="button" class="btn btn-sm btn-ghost" id="zoomInBtn" title="Zoom in">+</button>
+        <span class="zoom-sep"></span>
+        <button type="button" class="btn btn-sm btn-ghost" id="fitBtn" title="Fit to window">Fit</button>
+        <button type="button" class="btn btn-sm btn-ghost" id="resetBtn" title="Reset view">Reset View</button>
+      </div>
+
+      <!-- Add-a-zoom percent display (always visible) -->
+      <div class="cmp-zoomread" id="cmpZoomRead" aria-live="polite"></div>
+
+      <div class="modal-foot">
+        <label class="dl-format" for="downloadFormat">Format
+          <select id="downloadFormat" class="dl-select" aria-label="Download format">
+            <option value="webp">WebP</option>
+            <option value="jpg">JPEG</option>
+            <option value="png">PNG</option>
+          </select>
+        </label>
+        <span class="muted small dl-size" id="downloadSize" aria-live="polite"></span>
+        <button class="btn btn-primary" id="downloadOneBtn" type="button">⬇ Download Enhanced Image</button>
+        <button class="btn btn-ghost" id="anotherBtn" type="button">Enhance Another Image</button>
+      </div>
+    </section>
+
+    <!-- IMAGE QUEUE -->
+    <section class="queue" id="queue" aria-live="polite"></section>
+
+    <!-- REVIEW -->
+    <section class="card result-card" id="resultCard" hidden aria-labelledby="resultHead">
+      <div class="result-head">
+        <h3 class="section-title" id="resultHead">Review</h3>
+        <p class="muted" id="resultSub">Select an image to compare it side by side.</p>
+      </div>
+      <div class="review-grid" id="reviewGrid"></div>
+    </section>
+  </main>
+
+  <!-- ============ TECH SHOWCASE ============ -->
+  <section id="tech-showcase" class="tech-showcase wrap">
+    <h2 class="section-title ts-reveal">How PixelForge AI Works</h2>
+    <p class="section-sub ts-reveal">A transparent look at the engine: what runs in your browser, and why results stay natural.</p>
+    <div class="ts-grid">
+      <button type="button" class="ts-tech ts-reveal" tabindex="0">
+        <strong>🔍 Analysis first</strong>
+        <span>Smart Mode measures resolution, sharpness, noise, detail and a face hint — then picks 2×, 4× or 8×. Click to expand.</span>
+        <em class="ts-more">Downsampled to 256px for speed; Laplacian sharpness map also powers Face / Details / Texture focus areas.</em>
+      </button>
+      <button type="button" class="ts-tech ts-reveal" tabindex="0">
+        <strong>🖼️ Classic engine (instant)</strong>
+        <span>Hardware canvas resampling + restrained unsharp-mask + gentle colour. Click to expand.</span>
+        <em class="ts-more">No uploads, no server. Noisy images get gentler handling; faces stay soft to avoid the plastic look.</em>
+      </button>
+      <button type="button" class="ts-tech ts-reveal" tabindex="0">
+        <strong>🤖 AI engine (Real-ESRGAN)</strong>
+        <span>ONNX in-browser upscaler via WebGPU with WASM fallback, tiled so large images don't run out of memory. Click to expand.</span>
+        <em class="ts-more">Model downloads once (~5MB) on first AI enhance. If AI can't start, Classic takes over automatically.</em>
+      </button>
+    </div>
+    <div class="ts-steps ts-reveal">
+      <div class="ts-step open">
+        <button type="button" class="ts-step-head">1 · Upscale <span>canvas high-quality resampling / AI tiles</span></button>
+        <div class="ts-step-body">The image is rescaled to 2× / 4× / 8×. AI runs overlapping tiles with blended seams; Classic uses hardware-accelerated canvas.</div>
+      </div>
+      <div class="ts-step">
+        <button type="button" class="ts-step-head">2 · Detail recovery <span>restrained unsharp-mask (Classic only)</span></button>
+        <div class="ts-step-body">Edge-local micro-contrast is blended back in. Amount, radius and noise threshold adapt automatically — never oversharpened.</div>
+      </div>
+      <div class="ts-step">
+        <button type="button" class="ts-step-head">3 · Gentle colour <span>shadow-lift + ~6% saturation</span></button>
+        <div class="ts-step-body">A small lift keeps results lively without garish boosts. Metrics shown (Quality, Sharpness, Detail, Noise) are always real measured values.</div>
+      </div>
+    </div>
+    <div class="ts-tree-wrap ts-reveal">
+      <div class="ts-tree" role="group" aria-label="Project files">
+        <button type="button" data-explain="App shell: Studio, history, comparison workspace modal.">index.html</button>
+        <button type="button" data-explain="Enhancement + analysis engine: upscale, unsharp-mask detail, Smart Mode heuristics.">js/enhancer.js</button>
+        <button type="button" data-explain="Real AI upscaler: onnxruntime-web, tiled inference, Classic fallback.">js/ai-upscaler.js</button>
+        <button type="button" data-explain="UI orchestration: upload, queue, compare, downloads, history wiring.">js/app.js</button>
+        <button type="button" data-explain="localStorage-backed My Enhancements history.">js/history.js</button>
+      </div>
+      <p class="ts-explain" id="tsExplainPanel" aria-live="polite"></p>
+    </div>
+  </section>
+  <div class="ts-modal" id="tsExplainModal" hidden role="dialog" aria-modal="true" aria-label="Engine explanation">
+    <div class="ts-modal-panel">
+      <button type="button" class="modal-close ts-modal-close" aria-label="Close">✕</button>
+      <h3>Engine in 30 seconds</h3>
+      <p class="muted">Classic is instant and safe. AI hallucinates real texture for very small images. Smart Mode picks the level from measured sharpness, noise, detail and size — faces always get gentler handling.</p>
+    </div>
+  </div>
+  <div class="ts-modal" id="tsInterviewModal" hidden role="dialog" aria-modal="true" aria-label="Interview questions">
+    <div class="ts-modal-panel">
+      <button type="button" class="modal-close ts-modal-close" aria-label="Close">✕</button>
+      <h3>Interview Q&amp;A</h3>
+      <div class="ts-qa"><button type="button">Why not always use AI?</button><div class="ts-a muted">AI is heavier (model download + GPU). Classic wins for clean, large images where faithful resampling beats hallucination.</div></div>
+      <div class="ts-qa"><button type="button">How do you avoid fake metrics?</button><div class="ts-a muted">Every Quality / Sharpness / Detail / Noise value is recomputed from pixels before and after — never hardcoded.</div></div>
+      <div class="ts-qa"><button type="button">What happens on huge images?</button><div class="ts-a muted">AI tiles with overlap blending to avoid out-of-memory; history falls back to in-session-only when localStorage quota is hit.</div></div>
+    </div>
+  </div>
+<!-- ============ HISTORY ============ -->
+  <section id="history" class="history">
+    <h2 class="section-title">My Enhancements</h2>
+    <p class="section-sub">Your completed results, saved automatically. View, download or delete anytime.</p>
+    <div class="history-empty" id="historyEmpty">
+      <span class="level-emoji">🖼️</span>
+      <p class="muted">No enhancements yet. Upscale something in the Studio and it will appear here.</p>
+    </div>
+    <div class="history-grid" id="historyGrid"></div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="how">
+    <h2 class="section-title">How it works</h2>
+    <div class="how-grid">
+      <div class="how-step"><span class="how-num">1</span><h3>Upload</h3><p>Drop one image or many. We show a thumbnail for each.</p></div>
+      <div class="how-step"><span class="how-num">2</span><h3>Choose enhancement</h3><p>✨ Smart Mode, or pick 2×, 4× or 8× with live output preview.</p></div>
+      <div class="how-step"><span class="how-num">3</span><h3>Enhance</h3><p>Each image processes individually with live progress.</p></div>
+      <div class="how-step"><span class="how-num">4</span><h3>Compare</h3><p>Compare with synchronized zoom, focus areas and live quality metrics.</p></div>
+      <div class="how-step"><span class="how-num">5</span><h3>Download</h3><p>Grab a single result or download everything at once.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="brand"><span class="brand-logo small">P</span> PixelForge <em>AI</em></div>
+    <p class="promise">“Upscale your images. Recover the details. Keep them natural.”</p>
+    <p class="muted small">Client-side enhancement runs in your browser. Your images never leave your device.</p>
+  </footer>
+
+  <!-- ============ TOASTS ============ -->
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/enhancer.js"></script>
+  <script src="js/ai-upscaler.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/showcase.js"></script>
+</body>
+</html>
